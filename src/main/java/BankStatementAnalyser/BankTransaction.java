@@ -26,4 +26,12 @@ public class BankTransaction {
         return description;
     }
 
+    @Override
+    public String toString() {
+        return "BankTransaction{" +
+                "transactionDate=" + transactionDate +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

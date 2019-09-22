@@ -18,10 +18,15 @@ public class BankTransactionProcessor {
     }
 
     public double getTotalByMonth(Month month) {
-        return transactions.stream()
-                .filter(transaction -> transaction.getTransactionDate().getMonth() == month)
-                .mapToDouble(BankTransaction::getAmount)
-                .sum();
+//        return transactions.stream()
+//                .filter(transaction -> transaction.getTransactionDate().getMonth() == month)
+//                .mapToDouble(BankTransaction::getAmount)
+//                .sum();
+
+        BankTransactionSummarizer summarizer = (result, transaction) ->
+                transaction.getTransactionDate().getMonth() == month ? result + transaction.getAmount() : result;
+
+        return summarizeTransactions(summarizer);
     }
 
     public double getTotalByType(String description) {
@@ -35,5 +40,21 @@ public class BankTransactionProcessor {
         return transactions.stream()
                 .filter(t -> t.getAmount() >= amount)
                 .collect(Collectors.toList());
+    }
+
+    public List<BankTransaction> findTransaction(BankTransactionFilter transactionFilter) {
+        return transactions.stream()
+                .filter(t -> transactionFilter.test(t) == true)
+                .collect(Collectors.toList());
+    }
+
+    public double summarizeTransactions(BankTransactionSummarizer transactionSummarizer) {
+        double result = 0;
+
+        for (var transaction : transactions) {
+            result = transactionSummarizer.summarize(result, transaction);
+        }
+
+        return result;
     }
 }

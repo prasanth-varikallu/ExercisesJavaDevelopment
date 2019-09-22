@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Month;
 import java.util.List;
 
 public class BankStatementAnalyser {
@@ -27,5 +28,12 @@ public class BankStatementAnalyser {
         BankTransactionProcessor transactionProcessor = new BankTransactionProcessor(transactions);
 
         System.out.println(transactionProcessor.calculateTotal());
+        System.out.println(transactionProcessor.getTotalByMonth(Month.JANUARY));
+        List<BankTransaction> filteredTransactions = transactionProcessor.findTransaction(bankTransaction ->
+                bankTransaction.getTransactionDate().getMonth() == Month.FEBRUARY
+                        && bankTransaction.getAmount() >= 1_000);
+
+        filteredTransactions.forEach(System.out::println);
+
     }
 }
