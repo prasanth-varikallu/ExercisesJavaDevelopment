@@ -13,13 +13,7 @@ import java.util.List;
 public class BankStatementAnalyser {
     private static final String RESOURCES = "src/test/resources/Statement.csv";
 
-    public static void main(String[] args) throws IOException {
-
-        BankStatementAnalyser statementAnalyser = new BankStatementAnalyser();
-        statementAnalyser.analyse(new BankStatementCSVParser());
-    }
-
-    private void analyse(BankStatementParser statementParser) throws IOException {
+    public void analyse(final BankStatementParser statementParser) throws IOException {
 
         Path path = Paths.get(RESOURCES);
         List<String> lines = Files.readAllLines(path);
